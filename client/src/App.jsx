@@ -1,14 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   Sparkles, Search, SlidersHorizontal, ArrowUpRight, Star, Zap,
-  ShieldCheck, Heart, Smartphone, Laptop, Headphones, Watch,
+  ShieldCheck, Heart, Headphones, Watch,
   LoaderCircle, CheckCircle2, AlertCircle, RefreshCw, WandSparkles
 } from 'lucide-react';
 
 const API_BASE = import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? 'http://localhost:3001' : '');
 const categories = ['All products', 'Phones', 'Laptops', 'Audio', 'Wearables'];
 const categoryMap = { Phones: 'phone', Laptops: 'laptop', Audio: 'audio', Wearables: 'wearable' };
-const iconMap = { phone: Smartphone, laptop: Laptop, audio: Headphones, wearable: Watch };
 const prompts = [
   'I need a phone under $500 with a great camera',
   'Find me a laptop for coding under $1,000',
@@ -20,12 +19,11 @@ function money(value) {
 }
 
 function ProductCard({ product, recommendation, onToggle, selected }) {
-  const Icon = iconMap[product.category] || Smartphone;
   return (
     <article className={`product-card ${recommendation ? 'recommended-card' : ''}`}>
       <div className={`product-art art-${product.category}`}>
         <span className="category-chip">{product.category}</span>
-        <div className="device-orb"><Icon size={56} strokeWidth={1.35} /></div>
+        <img className="product-image" src={product.image} alt="" loading="lazy" decoding="async" />
         <button className={`save-button ${selected ? 'is-saved' : ''}`} onClick={() => onToggle(product.id)} aria-label={selected ? 'Remove from shortlist' : 'Add to shortlist'}>
           <Heart size={17} fill={selected ? 'currentColor' : 'none'} />
         </button>
