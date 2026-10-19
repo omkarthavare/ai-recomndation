@@ -73,3 +73,21 @@ Response:
 
 ## Production notes
 Before public deployment, add rate limiting, authentication if needed, centralized logs/monitoring, and hosting-specific CORS/origin configuration. Never commit `.env` or put the OpenAI key in frontend environment variables. The fallback is deterministic and intentionally limited; it is not a substitute for a configured AI model.
+
+
+## Deploy frontend and API together on Vercel
+
+This repository is configured to deploy as **one Vercel project and one domain**:
+- `/` serves the React app.
+- `/api/health`, `/api/products`, and `/api/recommendations` are handled by the Express serverless function.
+
+1. Push the project root (the folder containing the root `package.json` and `vercel.json`) to GitHub.
+2. In Vercel, choose **Add New → Project** and import that repository.
+3. Set **Root Directory** to the repository root (`./`), not `client` or `server`.
+4. Keep the build settings from `vercel.json` (`npm run build`, output directory `client/dist`).
+5. In **Settings → Environment Variables**, optionally add `OPENAI_API_KEY` and `OPENAI_MODEL` (for example, `gpt-4o-mini`). Do not use a `VITE_` prefix for the secret.
+6. Deploy, then test `https://YOUR-VERCEL-DOMAIN/api/health` and `https://YOUR-VERCEL-DOMAIN/api/products`.
+
+The app uses relative `/api/...` requests in production, so the browser and API share the same Vercel domain. No separate backend deployment or `VITE_API_URL` is required. Local development still uses the Vite proxy to the Express server on port 3001.
+
+**Important:** Vercel's function execution is serverless; do not use `npm start` as the Vercel deployment command. The root `vercel.json` routes API requests to `api/index.js`.

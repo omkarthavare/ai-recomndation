@@ -5,7 +5,7 @@ import {
   LoaderCircle, CheckCircle2, AlertCircle, RefreshCw, WandSparkles
 } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_BASE = import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? 'http://localhost:3001' : '');
 const categories = ['All products', 'Phones', 'Laptops', 'Audio', 'Wearables'];
 const categoryMap = { Phones: 'phone', Laptops: 'laptop', Audio: 'audio', Wearables: 'wearable' };
 const iconMap = { phone: Smartphone, laptop: Laptop, audio: Headphones, wearable: Watch };
